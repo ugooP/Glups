@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 Glups</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id='app'>
+
+        <!-- CART -->
+        <div class="cart">
+            <div class="cart_title">
+                <img src="img/glups_logo.png">
+                <h2>Votre panier</h2>
+                <img src="img/cart_logo.png">
+            </div>
+        
+            <p class="panier_vide" v-show='cart.length == 0'>Le panier est vide</p>
+        
+            <div class="cart_list">
+                <p class="command_passed_msg">Votre commande a bien été effectuée,<br>merci pour votre achat<img src='img/green_cross.png' @click='close_pop_up_msg'></p>
+                <p class="error_command_msg">Votre panier est vide, vous ne pouvez pas commander<img src='img/red_cross.png' @click='close_pop_up_msg'></p>
+                
+                <div class="product" v-for='product in cart' v-if='product.qty > 0'>
+                    <p class="product_name">{{product.name}}</p>
+                    <div class="qty">
+                        <span @click='product.qty -= 1, product.final_price = product.final_price - product.price' title="enlever un élément">-</span>
+                        <p>{{product.qty}}</p>
+                        <span @click='product.qty += 1, product.final_price = product.final_price + product.price' title="ajouter un élément">+</span>
+                    </div>
+                    <p class="product_price">{{product.final_price}}<span>€</span></p>
+                    <div class="cart_trash">
+                        <img src="img/trash.svg" title="supprimer du panier" @click='remove_from_cart(product)'>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="cart_bottom">
+                <div class="tot_cart_plants">
+                    <p>{{nb_cart_products}}</p>
+                    <p>Plante<span v-if='nb_cart_products > 1'>s</span></p>
+                </div>
+                <div class="tot_cart_price">
+                    <p>{{total_price}}<span>€</span></p>
+                    <p>total</p>
+                </div>
+                <p class="commander" @click='pass_command'>Commander</p>
+            </div>
+        </div>
+
+        <!-- WISH LIST -->
+        <div class="wish_list">
+            <div class="wish_list_title">
+                <h2>Favoris</h2>
+                <img src="img/wish_list_logo2.png">
+            </div>
+
+            <div class="wish_list_container wlc">
+                <div :class="'card wish_list_card card' + product.img_nb" v-for='product in wish_list'>
+                    <img src="img/trash.svg" class="remove_from_wish_list" title='retirer des favoris' @click='remove_from_wish_list(product), product.wish_listed -= 1'>
+                    <h2 class="plant_name">{{product.name}}</h2>
+                    <div class="card_img_box">
+                        <img :src="'img/card_img/card_img' + product.img_nb + '.png'" class="card_img">
+                    </div>
+                    <p class="plant_price">{{product.price}}<span>€</span></p>
+                    <img src="img/add_to_cart.png" title="Ajouter au panier" class="add_to_cart" @click='add_to_cart(product)'>
+                    <footer>
+                        <h3 class="description_title">Description</h3>
+                        <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum voluptatum, sequi perferendis ipsam rem blanditiis ut earum, sit eos dolorum sunt architecto eaque aperiam. Officiis, consequatur. Commodi dignissimos placeat non.</p>
+                        <a href="" class="details">Plus de détails...</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <header>
+            <div class="header_logo" @click='go_to_home'>
+                <img src="img/glups_logo.png" class="glups_logo">
+                <a class="glups_title">Glups</a>
+            </div>
+            <div class="header_right_part">
+                <div id="wish_list" @click="show_wish_list">
+                    <img src="img/wish_list_logo1.png" title="Mes favoris">
+                    <p>{{nb_wish_list_products}}</p>
+                </div>
+                <div id="cart" @click="show_cart">
+                    <img src="img/cart_logo.png" title="Mon panier">
+                    <p>{{nb_cart_products}}</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <div class="container">
+            <div :class="'card card' + product.img_nb" v-for='product in products'>
+                <img src="img/add_to_wish_list.png" title="Ajouter aux favoris" class="add_to_wish_list" @click='add_to_wish_list(product), product.wish_listed += 1' v-if='product.wish_listed == 0'>
+                <img src="img/wish_listed.png" class="wish_listed" title='Ajouté aux favoris' v-if='product.wish_listed == 1'>
+                <h2 class="plant_name">{{product.name}}</h2>
+                <div class="card_img_box">
+                    <img :src="'img/card_img/card_img' + product.img_nb + '.png'" class="card_img">
+                </div>
+                <p class="plant_price">{{product.price}}<span>€</span></p>
+                <img src="img/add_to_cart.png" title="Ajouter au panier" class="add_to_cart" @click='add_to_cart(product)'>
+                <footer>
+                    <h3 class="description_title">Description</h3>
+                    <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum voluptatum, sequi perferendis ipsam rem blanditiis ut earum, sit eos dolorum sunt architecto eaque aperiam. Officiis, consequatur. Commodi dignissimos placeat non.</p>
+                    <a href="" class="details">Plus de détails...</a>
+                </footer>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src='app.js'></script>
+</body>
+</html>
