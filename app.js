@@ -92,7 +92,7 @@ let app = new Vue({
             this.wish_list.push(product);
 
             // Éviter les doublons :
-            for (let i = 0; i < this.wish_list.length; i++) {                 
+            for (let i = 0; i < this.wish_list.length; i++) {
                 if (this.wish_list[i+1] == this.wish_list[i]) {
                     this.wish_list.splice(i+1, 1)
                 }
